@@ -1,0 +1,14 @@
+{
+  "name": "NavigationTransitions",
+  "version": "0.0.0",
+  "description": "Spec for cross-page animations in the browser",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tonygentilcore/NavigationTransitions.git"
+  },
+  "license": "Apache 2.0",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "typescript": "~1.0"
+  }
+}
