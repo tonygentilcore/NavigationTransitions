@@ -1,16 +1,36 @@
 import webapp2
 import os
 
-class StarryNightResultsPage(webapp2.RequestHandler):
-    def get(self):
-        self.response.headers['Content-Type'] = 'text/html'
-        self.response.headers['Link'] = '<transition.css>;rel=transition-entering-stylesheet;scope=*'
 
-        path = os.path.join(os.path.split(__file__)[0], 'starry_night_results/index.html')
-        with open(path) as f:
-            self.response.out.write(f.read())
+class MainPage(webapp2.RequestHandler):
+
+  def get(self):
+    self.response.headers['Content-Type'] = 'text/html'
+
+    for path in os.listdir(os.path.dirname(__file__)):
+      if os.path.isdir(path):
+        self.response.out.write('<a href="/%s/">%s</a><br>' %
+                                (path, path))
+
+
+class TransitionPage(webapp2.RequestHandler):
+
+  ROOT = 'index.html'
+  ENTERING_TRANSITION = 'transition.css'
+
+  def get(self):
+    directory = self.request.path
+
+    self.response.headers['Content-Type'] = 'text/html'
+    self.response.headers['Link'] = (
+        '<%s%s>;rel=transition-entering-stylesheet;scope=*' %
+        (directory, self.ENTERING_TRANSITION))
+
+    with open(os.path.dirname(__file__) + directory + self.ROOT) as f:
+      self.response.out.write(f.read())
+
 
 application = webapp2.WSGIApplication([
-    ('/starry_night_results/.*', StarryNightResultsPage),
+    ('/', MainPage),
+    ('/.*/', TransitionPage),
 ], debug=True)
-
